@@ -1,6 +1,4 @@
 
-
-
 <style>
 	body {
 	background-color: #232323;
@@ -85,8 +83,7 @@ button:hover {
 <div id="stripe">
 	<button id="reset">play</button>
 	<span id="message"></span>
-	<!--<button class="mode">Easy</button>
-	<button class="mode selected">Hard</button>-->
+
 </div>
 
 <div id="container">
@@ -127,12 +124,12 @@ resetBtn.addEventListener("click", function() {
 })
 
 
+
 function init() {
 
 
-
 	setupSquares();
-	
+
 	reset()
 }
 
@@ -147,24 +144,29 @@ function setupSquares() {
 		squares[i].addEventListener("click", function() {
 			//grab color selected square
 			var clickedColor = this.style.backgroundColor
-			console.log("picked color "+pickedColor );
-			console.log("clickedColor "+ clickedColor);
-			console.log("condition "+clickedColor === pickedColor )
+
 			//compare color to pickedColor
+
+			//condition to restrict number of levels
 			if(gameState>=6){
 				resetBtn.textContent = "Play Again"
-				gameState=-1;
+				gameState=-1;   // gameState is set to -1 if level>=6
 			
 			}
+			//checking condition
 			if(clickedColor === pickedColor) {
 				messageDisplay.textContent = "Correct!"
 				if(gameState < 6 ){
 					resetBtn.textContent = "Next Level";
+					
 				}
-				gameState= gameState +1;
+				gameState= gameState +1;  // increment the gameState
+
+				
 				if(gameState == 0){
 					resetBtn.textContent = "Play Again!";
 					messageDisplay.textContent =   "{{ output }} your Score is " +Score;
+				
 					Score=0;
 				}
 				Score = Score +1;
@@ -174,20 +176,21 @@ function setupSquares() {
 			} else {
 				this.style.backgroundColor = "#232323"
 				messageDisplay.textContent = "Try Again"
-			
-				Score = Score -1;
+			   // for wrong clickedColor decrementing the Score
+				Score = Score -1; 
 			}
-			console.log("game state "+ gameState);
+
 		})
-		console.log("outside listner game state"+ gameState);
+		
 	}	
 }
 
 function reset() {
 
 	colors = generateRandomColors(numSquares)
-	pickedColor = pickColor()
-	//colorDisplay.textContent = pickedColor
+	pickedColor = pickColor() ;
+
+	
 	
 	resetBtn.textContent = "Play"
 	messageDisplay.textContent = ""
@@ -211,6 +214,7 @@ function changeColors(color) {
 		squares[i].style.backgroundColor = color
 	}
 }
+// to pick color according to Fibonacci series
 function series(n){
 
 		if(n<=2){
@@ -223,8 +227,7 @@ function pickColor() {
 	
 	console.log("game state in pick color function"+ gameState);
 
-	var random = series(gameState);
-	console.log(random);
+	var random = series(gameState)-1;
 	return colors[random]
 	
 }

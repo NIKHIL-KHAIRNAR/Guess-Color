@@ -1,13 +1,17 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 var hbs = require('express-handlebars'); 
 var expessValidator = require('express-validator');
 var expessSession = require('express-session');
 var indexRouter = require('./routes/index');
+const dotenv = require('dotenv');
+// Database 
+const mongoose = require("mongoose")
+const {mongoClient} = require('mongodb')
 
+const indextask = require("./models/indextask")
+dotenv.config();
 
 var app = express();
 
@@ -16,21 +20,24 @@ app.engine('hbs', hbs({extname: 'hbs', defaultLayout:'layout', layoutsDir:__dirn
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(expessValidator());
-app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(expressSession({secret:'max', saveUninitialized:false, resave:false}));
+
 
 app.use('/', indexRouter);
+
+//Database connection
+mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:false, useCreateIndex:true});
+
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

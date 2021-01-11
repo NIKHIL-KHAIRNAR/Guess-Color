@@ -1,7 +1,9 @@
+// express 
 var express = require('express');
+// router to router through pages
 var router = express.Router();
-var  MongoClient = require('mongodb').MongoClient
-var assert = require('assert')
+//loading models
+const indextask = require('../models/indextask');
 
 
 /* GET home page. */
@@ -13,6 +15,11 @@ router.get('/game/:id', function(req, res, next){
 });
 router.post('/game/guessColor', function(req,res, next){
   var id = req.body.id;
+  var Name = {Name:id};
+  console.log(Name)
+
+  indextask.create(Name);
+
   
   res.redirect('/game/' + id);
 });
